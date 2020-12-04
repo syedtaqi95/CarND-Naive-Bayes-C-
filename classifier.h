@@ -14,7 +14,7 @@ class GNB {
   /**
    * Constructor
    */
-  GNB();
+  GNB(int X_size);
 
   /**
    * Destructor
@@ -33,6 +33,15 @@ class GNB {
   string predict(const vector<double> &sample);
 
   vector<string> possible_labels = {"left","keep","right"};
+
+  // Store the mean, stddev and M2 for each feature/label pair
+  // Format is means[label][feature]
+  vector<vector<double>> means;
+  vector<vector<double>> variances;
+  vector<vector<double>> M2;
+
+  // Store the prior probability for each label
+  vector<double> priors;
 };
 
 #endif  // CLASSIFIER_H

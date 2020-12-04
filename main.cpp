@@ -3,12 +3,14 @@
 #include <string>
 #include <vector>
 #include "classifier.h"
+#include <cmath>
 
 using std::cout;
 using std::endl;
 using std::ifstream;
 using std::string;
 using std::vector;
+
 
 // Helper functions to load .txt files
 vector<vector<double> > Load_State(string file_name);
@@ -23,11 +25,16 @@ int main() {
   cout << "X_train number of elements " << X_train.size() << endl;
   cout << "X_train element size " << X_train[0].size() << endl;
   cout << "Y_train number of elements " << Y_train.size() << endl;
-  
-  // Debug
-  cout << "Y_train[0]= " << Y_train[0] << endl;
 
-  GNB gnb = GNB();
+  // Modify d in both datasets so that it becomes relative to the lane width
+  for (int i = 0; i < X_train.size(); i++) {
+    X_train[i][1] = std::fmod(X_train[i][1], 4.0);
+  }
+  for (int i = 0; i < X_test.size(); i++) {
+    X_test[i][1] = std::fmod(X_test[i][1], 4.0);
+  }
+
+  GNB gnb = GNB(X_train[0].size());
   
   gnb.train(X_train, Y_train);
 
