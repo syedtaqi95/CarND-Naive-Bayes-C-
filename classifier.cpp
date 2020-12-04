@@ -82,25 +82,25 @@ void GNB::train(const vector<vector<double>> &data,
   }
 
   // Debug prints
-  cout << "-------------" << endl;
-  cout << "priors = " << priors[0] << " " << priors[1] << " " << priors[2] << endl;
+  // cout << "-------------" << endl;
+  // cout << "priors = " << priors[0] << " " << priors[1] << " " << priors[2] << endl;
   
-  cout << "means = " << endl;
-  for (auto i = 0; i < means.size(); i++) {
-    for (auto j = 0; j < means[i].size(); j++) {
-      cout << means[i][j] << ' ';
-    }
-    cout << endl;
-  }
+  // cout << "means = " << endl;
+  // for (auto i = 0; i < means.size(); i++) {
+  //   for (auto j = 0; j < means[i].size(); j++) {
+  //     cout << means[i][j] << ' ';
+  //   }
+  //   cout << endl;
+  // }
 
-  cout << "variances = " << endl;
-  for (auto i = 0; i < variances.size(); i++) {
-    for (auto j = 0; j < variances[i].size(); j++) {
-      cout << variances[i][j] << ' ';
-    }
-    cout << endl;
-  }
-  cout << "-------------" << endl;  
+  // cout << "variances = " << endl;
+  // for (auto i = 0; i < variances.size(); i++) {
+  //   for (auto j = 0; j < variances[i].size(); j++) {
+  //     cout << variances[i][j] << ' ';
+  //   }
+  //   cout << endl;
+  // }
+  // cout << "-------------" << endl;  
 }
 
 string GNB::predict(const vector<double> &sample) {
@@ -156,7 +156,7 @@ string GNB::predict(const vector<double> &sample) {
   }
 
   // Debug prints
-  cout << "-------------" << endl;
+  // cout << "-------------" << endl;
   // cout << "pdf = " << endl;
   // for (auto i = 0; i < pdf.size(); i++) {
   //   for (auto j = 0; j < pdf[i].size(); j++) {
@@ -164,11 +164,11 @@ string GNB::predict(const vector<double> &sample) {
   //   }
   //   cout << endl;
   // }
-  cout << "cond_probs = ";
-  for (auto i = 0; i < cond_probs.size(); i++) {
-    cout << cond_probs[i] << ' ';
-  }
-  cout << " | max_index = " << max_index << endl;
+  // cout << "cond_probs = ";
+  // for (auto i = 0; i < cond_probs.size(); i++) {
+  //   cout << cond_probs[i] << ' ';
+  // }
+  // cout << " | max_index = " << max_index << endl;
 
   return this -> possible_labels[max_index];
 }
