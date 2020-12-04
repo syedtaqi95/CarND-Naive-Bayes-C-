@@ -21,18 +21,18 @@ int main() {
   vector< vector<double> > X_test  = Load_State("./test_states.txt");
   vector< string > Y_train = Load_Label("./train_labels.txt");
   vector< string > Y_test  = Load_Label("./test_labels.txt");
-    
+
+  // // Modify d in both datasets so that it becomes relative to the lane width
+  // for (int i = 0; i < X_train.size(); i++) {
+  //   X_train[i].push_back(std::fmod(X_train[i][1], 4.0));
+  // }
+  // for (int i = 0; i < X_test.size(); i++) {
+  //   X_test[i].push_back(std::fmod(X_train[i][1], 4.0));
+  // }
+
   cout << "X_train number of elements " << X_train.size() << endl;
   cout << "X_train element size " << X_train[0].size() << endl;
   cout << "Y_train number of elements " << Y_train.size() << endl;
-
-  // Modify d in both datasets so that it becomes relative to the lane width
-  for (int i = 0; i < X_train.size(); i++) {
-    X_train[i][1] = std::fmod(X_train[i][1], 4.0);
-  }
-  for (int i = 0; i < X_test.size(); i++) {
-    X_test[i][1] = std::fmod(X_test[i][1], 4.0);
-  }
 
   GNB gnb = GNB(X_train[0].size());
   

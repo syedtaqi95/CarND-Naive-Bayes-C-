@@ -3,12 +3,15 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <numeric>
 
 using Eigen::ArrayXd;
 using std::string;
 using std::vector;
 using std::cout;
 using std::endl;
+using std::begin;
+using std::end;
 
 // Initializes GNB
 GNB::GNB(int X_size) {
@@ -47,7 +50,12 @@ void GNB::train(const vector<vector<double>> &data,
    */
 
   // Store how many times each label occurs in the training data
-  vector<int> label_count = {0, 0, 0};
+  vector<int> label_count;
+
+  // Init to 0
+  for (int label = 0; label < possible_labels.size(); label++) {
+    label_count.push_back(0);
+  }
 
   for (int sample = 0; sample < labels.size(); sample++) {
     for (int label = 0; label < possible_labels.size(); label++) {
@@ -73,8 +81,10 @@ void GNB::train(const vector<vector<double>> &data,
     priors.push_back(prior_value);
   }
 
-  // Debug
-  /*cout << "priors = " << priors[0] << " " << priors[1] << " " << priors[2] << endl;
+  // Debug prints
+  cout << "-------------" << endl;
+  cout << "priors = " << priors[0] << " " << priors[1] << " " << priors[2] << endl;
+  
   cout << "means = " << endl;
   for (auto i = 0; i < means.size(); i++) {
     for (auto j = 0; j < means[i].size(); j++) {
@@ -82,7 +92,15 @@ void GNB::train(const vector<vector<double>> &data,
     }
     cout << endl;
   }
-  */
+
+  cout << "variances = " << endl;
+  for (auto i = 0; i < variances.size(); i++) {
+    for (auto j = 0; j < variances[i].size(); j++) {
+      cout << variances[i][j] << ' ';
+    }
+    cout << endl;
+  }
+  cout << "-------------" << endl;  
 }
 
 string GNB::predict(const vector<double> &sample) {
@@ -96,6 +114,61 @@ string GNB::predict(const vector<double> &sample) {
    *
    * TODO: Complete this function to return your classifier's prediction
    */
-  
-  return this -> possible_labels[1];
+
+  // Vector of prob density functions for each feature/label pair
+  vector<vector<double>> pdf;
+
+  // Init all pdf's to 0
+  for (int label = 0; label < possible_labels.size(); label++) {
+    vector<double> temp_vec;
+    for(int f = 0; f < sample.size(); f++) {
+      temp_vec.push_back(0.0);
+    }
+    pdf.push_back(temp_vec);
+  }
+
+  // Calculate Gaussian pdf's
+  for (int label = 0; label < possible_labels.size(); label++) {
+    for (int feature = 0; feature < sample.size(); feature++) {      
+      double norm_term = 1 / (sqrt(2*M_PI*variances[label][feature]));
+      double exp_term = - pow(sample[feature] - means[label][feature], 2) / (2*variances[label][feature]);
+      pdf[label][feature] = norm_term * exp(exp_term);
+    }
+  }
+
+  // Calculate conditional probabilities for each label
+  vector<double> cond_probs;
+  for (int label = 0; label < possible_labels.size(); label++) {
+    cond_probs.push_back(priors[label]);
+    for (int feature = 0; feature < sample.size(); feature++) {
+      cond_probs[label] *= pdf[label][feature];
+    }
+  }
+
+  int max_index = 0;
+  double max_prob = 0.0;
+  // Return the label of highest probability
+  for (int label = 0; label < cond_probs.size(); label++) {
+    if(cond_probs[label] > max_prob) {
+      max_index = label;
+      max_prob = cond_probs[label];
+    }
+  }
+
+  // Debug prints
+  cout << "-------------" << endl;
+  // cout << "pdf = " << endl;
+  // for (auto i = 0; i < pdf.size(); i++) {
+  //   for (auto j = 0; j < pdf[i].size(); j++) {
+  //     cout << pdf[i][j] << ' ';
+  //   }
+  //   cout << endl;
+  // }
+  cout << "cond_probs = ";
+  for (auto i = 0; i < cond_probs.size(); i++) {
+    cout << cond_probs[i] << ' ';
+  }
+  cout << " | max_index = " << max_index << endl;
+
+  return this -> possible_labels[max_index];
 }
