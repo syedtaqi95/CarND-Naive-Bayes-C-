@@ -24,6 +24,7 @@ int main() {
   cout << "X_train element size " << X_train[0].size() << endl;
   cout << "Y_train number of elements " << Y_train.size() << endl;
   
+  // Debug
   cout << "Y_train[0]= " << Y_train[0] << endl;
 
   GNB gnb = GNB();
