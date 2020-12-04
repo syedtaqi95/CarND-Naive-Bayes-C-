@@ -74,8 +74,7 @@ void GNB::train(const vector<vector<double>> &data,
   }
 
   // Debug
-  /*
-  cout << "priors = " << priors[0] << " " << priors[1] << " " << priors[2] << endl;
+  /*cout << "priors = " << priors[0] << " " << priors[1] << " " << priors[2] << endl;
   cout << "means = " << endl;
   for (auto i = 0; i < means.size(); i++) {
     for (auto j = 0; j < means[i].size(); j++) {
