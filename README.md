@@ -1,2 +1,2 @@
-# CarND-Naive-Bayes-C--
+# CarND-Naive-Bayes-C++
  
